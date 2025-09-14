@@ -12,8 +12,8 @@ using TaskDataBase.Context;
 namespace TaskDataBase.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20250909184603_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250914111610_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

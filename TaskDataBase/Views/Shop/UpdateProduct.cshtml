@@ -1,4 +1,7 @@
 ﻿@model UpdateProductViewModel
+@{
+    var categories = ViewData["Categories"] as List<GetCategoryViewModel>;
+}
 <div>
     <form asp-controller="Shop" asp-action="UpdateProduct">
         <label>Name</label>
@@ -7,6 +10,9 @@
         <input type="text" name="Description" value="@Model.Description" />
         <label>Price</label>
         <input type="number" name="Price" value="@Model.Price" />
+        <select asp-for="CategoryId" asp-items=ViewBag.Categories>
+            <option value="">-- Select Category --</option>
+        </select>
         <button type="submit" asp-action="UpdateProduct">Update Product</button>
     </form>
 </div>

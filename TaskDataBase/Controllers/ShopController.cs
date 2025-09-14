@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaskDataBase.Context;
 using TaskDataBase.Models.Entity.Conceretes;
@@ -23,7 +24,8 @@ namespace TaskDataBase.Controllers
                Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
-                Price = p.Price
+                Price = p.Price,
+                CategoryName = _context.Categories.FirstOrDefault(c => c.Id == p.CategoryId)?.Name
             }).ToList();
             return View(prViewModel);
 
@@ -31,17 +33,24 @@ namespace TaskDataBase.Controllers
         [HttpGet]
         public IActionResult AddProduct()
         {
+            ViewData["Categories"] = _context.Categories.Select(c => new GetCategoryViewModel
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToList();
             return View();
         }
         [HttpPost]
         public IActionResult AddProduct(AddProductViewModel product)
         {
+
             var pr = new Product
             {
                 
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price
+                Price = product.Price,
+                CategoryId = product.CategoryId
             };
             _context.Products.Add(pr);
             _context.SaveChanges();
@@ -70,6 +79,12 @@ namespace TaskDataBase.Controllers
                 Description = product.Description,
                 Price = product.Price
             };
+            var categories = _context.Categories.Select(c => new GetCategoryViewModel
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToList();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
             return View(prViewModel);
         }
         [HttpPost]
@@ -81,6 +96,7 @@ namespace TaskDataBase.Controllers
             product.Name = pr.Name;
             product.Description = pr.Description;
             product.Price = pr.Price;
+            product.CategoryId = pr.CategoryId;
             _context.Products.Update(product);
             _context.SaveChanges();
             return RedirectToAction("GetAllProducts");
@@ -152,5 +168,11 @@ namespace TaskDataBase.Controllers
             _context.SaveChanges();
             return RedirectToAction("GetAllCategory");
         }
+       
+            
+            
+
+       
+        
     }
 }

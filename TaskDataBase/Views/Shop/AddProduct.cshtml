@@ -1,4 +1,8 @@
-﻿<div>
+﻿@model AddProductViewModel
+@{
+    var cat = ViewData["Categories"] as List<GetCategoryViewModel>;
+}
+<div>
     <form asp-controller="Shop" asp-action="AddProduct">
         <label>Name</label>
         <input type="text" name="Name" />
@@ -6,6 +10,10 @@
         <input type="text" name="Description" />
         <label>Price</label>
         <input type="number" name="Price" />
+            <label>Category</label>
+        <select asp-for="CategoryId" asp-items="@(new SelectList(cat,"Id","Name"))">
+            <option value="">-- Select Category --</option>
+            </select>
         <button type="submit" asp-action="AddProduct">Add Product</button>
     </form>
 </div>
